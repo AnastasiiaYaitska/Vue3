@@ -1,8 +1,18 @@
 <template>
   <section>
     <header><h1>My friends</h1></header>
+    <new-friend @submit-contact="addContact"></new-friend>
     <ul>
-      <friend-contact></friend-contact>
+      <friend-contact
+        v-for="friend in friends"
+        :key="friend.id"
+        :id="friend.id"
+        :name="friend.name"
+        :phone-number="friend.phone"
+        :email-address="friend.email"
+        :is-favorite="friend.isFavorite"
+        @toggle-favorite="toggleFavoriteStatus"
+      ></friend-contact>
     </ul>
   </section>
 </template>
@@ -11,21 +21,39 @@
 export default {
   data() {
     return {
-      friend: [
+      friends: [
         {
           id: "manuel",
           name: "Manuel Lorenz",
           phone: "01234 5678 991",
           email: "manuel@localhost.com",
+          isFavorite: false,
         },
         {
           id: "julie",
           name: "Julie Jones",
           phone: "09876 543 221",
           email: "julie@localhost.com",
+          isFavorite: true,
         },
       ],
     };
+  },
+  methods: {
+    toggleFavoriteStatus(id) {
+      const identifyFriend = this.friends.find((friend) => friend.id === id);
+      identifyFriend.isFavorite = !identifyFriend.isFavorite;
+    },
+    addContact(contact) {
+      const newContact = {
+        id: new Date().toISOString(),
+        name: contact.name,
+        phone: contact.phone,
+        email: contact.email,
+        isFavorite: false,
+      };
+      this.friends.push(newContact);
+    },
   },
 };
 </script>
