@@ -5,6 +5,8 @@
     <button @click="toggleDetails">
       {{ detailsAreVisible ? "Hide " : "Show " }} Details
     </button>
+    <button @click="$emit('delete', id)">Delete</button>
+    <!-- //we can emit event directly in event listener -->
     <ul v-if="detailsAreVisible">
       <li><strong>Phone:</strong>{{ phoneNumber }}</li>
       <li><strong>Email:</strong>{{ emailAddress }}</li>

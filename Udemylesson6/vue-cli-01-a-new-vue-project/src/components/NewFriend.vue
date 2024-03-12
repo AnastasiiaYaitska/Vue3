@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  emits: ["submit-contact"],
+  emits: ["submit-contact", "delete"],
   data() {
     return {
       enteredName: "",
