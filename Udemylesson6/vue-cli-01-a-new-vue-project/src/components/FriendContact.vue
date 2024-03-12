@@ -43,7 +43,7 @@ export default {
       // },    // we can add validation for each props
     },
   },
-  emits: ["toggle-favorite"],
+  emits: ["toggle-favorite", "delete"],
   // this parameter helps others developers understand your code, and see what the emits component has
 
   // emits: {
