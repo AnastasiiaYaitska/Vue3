@@ -8,6 +8,12 @@
       :info-text="activeUser.description"
       :role="activeUser.role"
     />
+    <CourseGoals #default="slotProps">
+      <!-- <template #default="slotProps"> -->
+      <h2>{{ slotProps.goal }}</h2>
+      <p>{{ slotProps["another-prop"] }}</p>
+      <!-- </template> -->
+    </CourseGoals>
   </div>
 </template>
 
@@ -15,6 +21,8 @@
 import TheHeader from "./components/TheHeader.vue";
 import UserInfo from "./components/UserInfo.vue";
 import BadgeList from "./components/BadgeList.vue";
+import CourseGoals from "./components/CourseGoals.vue";
+
 export default {
   //local components registration. Available locale
   components: {
@@ -22,6 +30,7 @@ export default {
     BadgeList, //if vi registered components like this , they are available in both sintakse
     TheHeader,
     UserInfo,
+    CourseGoals,
   },
   data() {
     return {
