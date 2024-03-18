@@ -16,6 +16,7 @@ export default {
       return {
         name: 'team-members',
         params: { teamId: this.id },
+        query: { sort: 'abc' }, // we can add query parameters just to declare it in url, we don't need to declare it in maim.js
       };
     },
   },

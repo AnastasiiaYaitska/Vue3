@@ -43,6 +43,7 @@ export default {
   },
   created() {
     this.loadTeamsMembers(this.teamId);
+    console.log(this.$route.query); //we have extract query params from the $route
   },
   watch: {
     teamId(newId) {
