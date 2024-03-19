@@ -4,7 +4,14 @@
     <button @click="animatedBlock">Animate</button>
   </div>
   <div class="container">
-    <transition>
+    <transition
+      @before-enter="beforeEnter"
+      @enter="enter"
+      @after-enter="afterEnter"
+      @before-leave="beforeLeave"
+      @leave="leave"
+      @after-leave="afterLeave"
+    >
       <p v-if="isParagraphVisible">This text can be hide</p>
     </transition>
     <button @click="toggleParagraph">Hide paragraph</button>
@@ -52,6 +59,27 @@ export default {
     },
     hideButton() {
       this.isButtonShow = false;
+    },
+    beforeEnter(el) {
+      console.log('before enter');
+      console.log(el);
+    },
+    enter(el) {
+      console.log('enter');
+      console.log(el);
+    },
+    afterEnter(el) {
+      console.log('after enter');
+      console.log(el);
+    },
+    beforeLeave(el) {
+      console.log('before leave', el);
+    },
+    leave(el) {
+      console.log('leave', el);
+    },
+    afterLeave(el) {
+      console.log('after leave', el);
     },
   },
 };
