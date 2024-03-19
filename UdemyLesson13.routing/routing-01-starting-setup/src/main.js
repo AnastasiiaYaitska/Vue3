@@ -18,6 +18,7 @@ const router = createRouter({
     {
       name: 'teams',
       path: '/teams',
+      meta: { needAuth: true },
       components: { default: TeamsList, footer: TeamsFooter },
       children: [
         {
@@ -63,7 +64,12 @@ router.beforeEach((to, from, next) => {
   //   } else {
   //     next({ name: 'team-members', params: { teamId: 't2' } });
   //   }
-  next();
+
+  if (to.meta.needAuth) {
+    next();
+  } else {
+    next(); //here you can prevent routing
+  }
 });
 
 router.afterEach((to, from) => {
