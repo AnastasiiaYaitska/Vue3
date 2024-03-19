@@ -45,6 +45,13 @@ export default {
     this.loadTeamsMembers(this.teamId);
     console.log(this.$route.query); //we have extract query params from the $route
   },
+  //using routes instead of props, components is less flexible. Better to use watcher
+  beforeRouteUpdate(to, from, next) {
+    console.log('Teams members Cmp before update');
+    console.log(to, from);
+    // this.loadTeamsMembers(to.params.teamId);
+    next();
+  },
   watch: {
     teamId(newId) {
       this.loadTeamsMembers(newId);

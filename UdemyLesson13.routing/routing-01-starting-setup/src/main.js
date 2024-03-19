@@ -35,6 +35,11 @@ const router = createRouter({
         default: UsersList,
         footer: UsersFooter,
       },
+      beforeEnter(to, from, next) {
+        console.log('users beforeEach');
+        console.log(to, from);
+        next(); //conform every navigation
+      },
     },
 
     { path: '/:notFound(.*)', component: NotFound },
@@ -47,6 +52,24 @@ const router = createRouter({
     }
     return { left: 0, top: 0 };
   },
+});
+
+//global router guard
+router.beforeEach((to, from, next) => {
+  console.log('Global beforeEachEach');
+  console.log(to, from);
+  //   if (to.name === 'team-members') {       //example of using
+  //     next();
+  //   } else {
+  //     next({ name: 'team-members', params: { teamId: 't2' } });
+  //   }
+  next();
+});
+
+router.afterEach((to, from) => {
+  //sending analytic data
+  console.log('Global afterEach');
+  console.log(to, from);
 });
 
 const app = createApp(App);
