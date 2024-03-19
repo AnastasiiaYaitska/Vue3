@@ -14,7 +14,7 @@
     <button @click="hideDialog">Close it!</button>
   </base-modal>
   <div class="container">
-    <transition name="button-fade" mode="">
+    <transition name="button-fade" mode="out-in">
       <button @click="showButton" v-if="!isButtonShow">Show in</button>
       <button @click="hideButton" v-else>Hide out</button>
     </transition>
