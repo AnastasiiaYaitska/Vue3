@@ -39,7 +39,14 @@ const router = createRouter({
 
     { path: '/:notFound(.*)', component: NotFound },
   ],
-  linkActiveClass: 'active', //adding custom name to active class, instead of default 'router-link-active'
+  linkActiveClass: 'active', //adding custom name to active class, instead of default 'router-link-active''
+  scrollBehavior(to, from, scrollPosition) {
+    console.log(to, from, scrollPosition);
+    if (scrollPosition) {
+      return scrollPosition;
+    }
+    return { left: 0, top: 0 };
+  },
 });
 
 const app = createApp(App);
