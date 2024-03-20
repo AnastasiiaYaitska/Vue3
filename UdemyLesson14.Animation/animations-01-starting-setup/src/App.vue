@@ -4,13 +4,17 @@
     <button @click="animatedBlock">Animate</button>
   </div>
   <div class="container">
+    <!-- we can use :class="false" in transition for at better performance, if we don't use css for transition, and use js instead for -->
     <transition
+      :class="false"
       @before-enter="beforeEnter"
       @enter="enter"
       @after-enter="afterEnter"
       @before-leave="beforeLeave"
       @leave="leave"
       @after-leave="afterLeave"
+      @enter-cancelled="enterCancelled"
+      @leave-cancelled="leaveCancelled"
     >
       <p v-if="isParagraphVisible">This text can be hide</p>
     </transition>
@@ -39,6 +43,8 @@ export default {
       isParagraphVisible: false,
       isButtonShow: false,
       dialogIsVisible: false,
+      enterInterval: null,
+      leaveInterval: null,
     };
   },
   methods: {
@@ -63,10 +69,20 @@ export default {
     beforeEnter(el) {
       console.log('before enter');
       console.log(el);
+      el.style.opacity = 0;
     },
-    enter(el) {
+    enter(el, done) {
       console.log('enter');
       console.log(el);
+      let round = 1;
+      this.enterInterval = setInterval(() => {
+        el.style.opacity = round * 0.01;
+        round++;
+        if (round > 100) {
+          clearInterval(this.enterInterval);
+          done();
+        }
+      }, 20);
     },
     afterEnter(el) {
       console.log('after enter');
@@ -74,12 +90,30 @@ export default {
     },
     beforeLeave(el) {
       console.log('before leave', el);
+      el.style.opacity = 1;
     },
-    leave(el) {
+    leave(el, done) {
       console.log('leave', el);
+      let round = 100;
+      this.leaveInterval = setInterval(() => {
+        el.style.opacity = round * 0.01;
+        round--;
+        if (round <= 0) {
+          clearInterval(this.leaveInterval);
+          done();
+        }
+      }, 20);
     },
     afterLeave(el) {
       console.log('after leave', el);
+    },
+    enterCancelled(el) {
+      console.log(el);
+      clearInterval(this.enterInterval);
+    },
+    // cancelled-leave event emit argument element as a cancelled-enter but if we don't use it , we don't have declare it
+    leaveCancelled() {
+      clearInterval(this.leaveInterval);
     },
   },
 };
@@ -132,7 +166,7 @@ button:active {
   animation: slide-fade 0.3s ease-out forwards;
 }
 
-.v-enter-from {
+/* .v-enter-from {
   opacity: 0;
   transform: translateY(-30px);
 }
@@ -158,7 +192,7 @@ button:active {
 .v-leave-to {
   opacity: 0;
   transform: translateY(30px);
-}
+} */
 
 .button-fade-enter-from,
 .button-fade-leave-to {
