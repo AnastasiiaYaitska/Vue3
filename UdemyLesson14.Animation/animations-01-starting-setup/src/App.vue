@@ -1,14 +1,14 @@
 <template>
-  <div class="container">
+  <!-- <div class="container">
     <users-list></users-list>
   </div>
   <div class="container">
     <div class="block" :class="{ animate: isBlockAnimated }"></div>
     <button @click="animatedBlock">Animate</button>
   </div>
-  <div class="container">
-    <!-- we can use :class="false" in transition for at better performance, if we don't use css for transition, and use js instead for -->
-    <transition
+  <div class="container"> -->
+  <!-- we can use :class="false" in transition for at better performance, if we don't use css for transition, and use js instead for -->
+  <!-- <transition
       :class="false"
       @before-enter="beforeEnter"
       @enter="enter"
@@ -35,13 +35,19 @@
   </div>
   <div class="container">
     <button @click="showDialog">Show Dialog</button>
-  </div>
+  </div> -->
+
+  <router-view v-slot="slotProps">
+    <transition name="router" mode="out-in">
+      <component :is="slotProps.Component"></component>
+    </transition>
+  </router-view>
 </template>
 
 <script>
-import UsersList from './components/UsersList.vue';
+// import UsersList from './components/UsersList.vue';
 export default {
-  components: { UsersList },
+  // components: { UsersList },
   data() {
     return {
       isBlockAnimated: false,
@@ -200,20 +206,26 @@ button:active {
 } */
 
 .button-fade-enter-from,
-.button-fade-leave-to {
+.button-fade-leave-to,
+.router-enter-from,
+.router-leave-to {
   opacity: 0;
 }
 
-.button-fade-enter-active {
+.button-fade-enter-active,
+.router-enter-active {
   transition: opacity 0.3s ease-in;
 }
 
-.button-fade-leave-active {
+.button-fade-leave-active,
+.router-leave-active {
   transition: opacity 0.3s ease-out;
 }
 
 .button-fade-enter-to,
-.button-fade-leave-from {
+.button-fade-leave-from,
+.router-enter-to,
+.router-leave-from {
   opacity: 1;
 }
 @keyframes slide-fade {
