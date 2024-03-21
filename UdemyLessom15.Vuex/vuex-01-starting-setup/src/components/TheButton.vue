@@ -17,7 +17,7 @@ export default {
     // console.log(this.$store.getters.finalCounter);
     // this.$store.dispatch('increment');
     // },
-    ...mapActions(['increment', 'increase']),
+    ...mapActions('numbers', ['increment', 'increase']),
   },
 };
 </script>
