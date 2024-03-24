@@ -31,6 +31,17 @@ export default {
     cardQuantity() {
       return this.$store.getters['cart/quantity'];
     },
+    isLoggedIn() {
+      return this.$store.getters.userAuth;
+    },
+  },
+  methods: {
+    login() {
+      this.$store.dispatch('login');
+    },
+    logout() {
+      this.$store.dispatch('logout');
+    },
   },
 };
 </script>
