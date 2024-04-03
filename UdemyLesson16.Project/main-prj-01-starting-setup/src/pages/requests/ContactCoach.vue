@@ -8,7 +8,7 @@
       <label for="message">Message</label>
       <textarea id="message" v-model.trim="message"></textarea>
     </div>
-    <p class="error" v-if="!isFormValid">
+    <p class="errors" v-if="!isFormValid">
       Please enter en valid email and not empty message area!
     </p>
     <div class="action">
@@ -37,6 +37,12 @@ export default {
         this.isFormValid = false;
         return;
       }
+      this.$store.dispatch('requests/addRequest', {
+        coachId: this.$router.id,
+        email: this.email,
+        message: this.message,
+      });
+      this.$router.replace('/coaches');
     },
   },
 };
