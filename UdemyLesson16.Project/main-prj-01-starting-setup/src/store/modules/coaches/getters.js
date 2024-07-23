@@ -7,7 +7,7 @@ export default {
   },
   isCoachWasRegistered(_, getters, _2, rootGetters) {
     const coaches = getters.getAllCoaches;
-    const userId = rootGetters.userId;
+    const userId = rootGetters.getUserId;
     return coaches.some((coach) => coach.id === userId);
   },
 };

@@ -1,29 +1,39 @@
 <template>
-  <section>
-    <coaches-filter @update-filter="setFilter"></coaches-filter>
-  </section>
-  <section>
-    <base-card>
-      <div class="container">
-        <base-button mode="outline">Refresh</base-button>
-        <base-button v-if="!isCoach" link to="/register"
-          >Register as a coach</base-button
-        >
-        <ul v-if="hasCoaches">
-          <coaches-item
-            v-for="coach in filteredCoaches"
-            :key="coach.id"
-            :id="coach.id"
-            :first-name="coach.firstName"
-            :last-name="coach.lastName"
-            :areas="coach.areas"
-            :rate="coach.hourlyRate"
-          ></coaches-item>
-        </ul>
-        <p v-else>No coaches available</p>
-      </div>
-    </base-card>
-  </section>
+  <div>
+    <base-dialog :show="!!error" title="An error occurred!" @close="handleClose">
+      <p>{{ error }}</p>
+    </base-dialog>
+    <section>
+      <coaches-filter @update-filter="setFilter"></coaches-filter>
+    </section>
+    <section>
+      <base-card>
+        <div class="container">
+          <div class="controls">
+            <base-button mode="outline" @click="loadCoaches">Refresh</base-button>
+            <base-button v-if="!isCoach && !isLoading" link to="/register"
+              >Register as a coach</base-button
+            >
+          </div>
+          <div v-if="isLoading">
+            <base-spinner />
+          </div>
+          <ul v-else-if="hasCoaches">
+            <coaches-item
+              v-for="coach in filteredCoaches"
+              :key="coach.id"
+              :id="coach.id"
+              :first-name="coach.firstName"
+              :last-name="coach.lastName"
+              :areas="coach.areas"
+              :rate="coach.hourlyRate"
+            ></coaches-item>
+          </ul>
+          <p v-else>No coaches available</p>
+        </div>
+      </base-card>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -34,6 +44,8 @@ export default {
   data() {
     return {
       activeFilter: { frontend: true, backend: true, career: true },
+      isLoading: false,
+      error: null,
     };
   },
   computed: {
@@ -56,12 +68,27 @@ export default {
       });
     },
     hasCoaches() {
-      return this.$store.getters['coaches/hasCoaches'];
+      return !this.isLoading && this.$store.getters['coaches/hasCoaches'];
     },
   },
+  created() {
+    this.loadCoaches();
+  },
   methods: {
+    handleClose() {
+      this.error = null;
+    },
     setFilter(updateFilter) {
       this.activeFilter = updateFilter;
+    },
+    async loadCoaches() {
+      this.isLoading = true;
+      try {
+        await this.$store.dispatch('coaches/loadCoaches');
+      } catch (error) {
+        this.error = error.message || 'Something went wrong!';
+      }
+      this.isLoading = false;
     },
   },
 };

@@ -1,8 +1,9 @@
 export default {
-  allRequests(store) {
-    return store.requests;
+  allRequests(store, _, _2, rootGetters) {
+    const coachId = rootGetters.getUserId;
+    return store.requests.filter((req) => req.coachId === coachId);
   },
-  isHasRequests(store) {
-    return store.requests && store.requests.length > 0;
+  isHasRequests(_, getters) {
+    return getters.allRequests && getters.allRequests.length > 0;
   },
 };
