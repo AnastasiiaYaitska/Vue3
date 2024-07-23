@@ -26,8 +26,9 @@ export default {
   },
   async fetchRequests(context) {
     const coachId = context.rootGetters.getUserId;
+    const token = context.rootGetters.getToken
     const response = await await fetch(
-      `https://coaches-1f75d-default-rtdb.europe-west1.firebasedatabase.app/requests/${coachId}.json`
+      `https://coaches-1f75d-default-rtdb.europe-west1.firebasedatabase.app/requests/${coachId}.json?auth=`+ token
     );
     const responseData = await response.json();
 
