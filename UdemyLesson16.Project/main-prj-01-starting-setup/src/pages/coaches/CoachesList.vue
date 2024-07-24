@@ -14,7 +14,7 @@
             <base-button v-if="!isCoach && !isLoading && isLoggedIn" link to="/register"
               >Register as a coach</base-button
             >
-            <base-button link to="/auth" v-if="!isLoggedIn">Login</base-button>
+            <base-button link to="/auth?redirect=register" v-if="!isLoggedIn">Login to Register as a coach</base-button>
           </div>
           <div v-if="isLoading">
             <base-spinner />
