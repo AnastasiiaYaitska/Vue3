@@ -21,43 +21,51 @@
 </template>
 
 <script setup>
-import { ref, defineProps, computed, watch, toRefs } from 'vue';
+import { defineProps, computed, watch, toRefs } from 'vue';
 import ProjectItem from './ProjectItem.vue';
-
+import useSearch from '../../hooks/search';
 const props = defineProps({
-  user: Array,
+  user: Object,
 });
-const enteredSearchTerm = ref('');
-const activeSearchTerm = ref('');
 
-const availableProjects = computed(() => {
-  if (activeSearchTerm.value) {
-    return props.user.projects.filter((prj) =>
-      prj.title.includes(activeSearchTerm.value)
-    );
-  }
-  return props.user.projects;
-});
+const { user } = toRefs(props);
+const projects = computed(() => (user.value ? user.value.projects : []));
+
+const {
+  enteredSearchTerm,
+  availableItems: availableProjects,
+  updateSearch,
+} = useSearch(projects, 'title');
+
+// const enteredSearchTerm = ref('');
+// const activeSearchTerm = ref('');
+
+// const availableProjects = computed(() => {
+//   if (activeSearchTerm.value) {
+//     return props.user.projects.filter((prj) =>
+//       prj.title.includes(activeSearchTerm.value)
+//     );
+//   }
+//   return props.user.projects;
+// });
 const hasProjects = computed(
-  () => props.user.projects && availableProjects.value.length > 0
+  () => user.value.projects && availableProjects.value.length > 0
 );
 
-const updateSearch = (val) => {
-  return (enteredSearchTerm.value = val);
-};
+// const updateSearch = (val) => {
+//   return (enteredSearchTerm.value = val);
+// };
 
-watch(enteredSearchTerm, (newValues) => {
-  setTimeout(() => {
-    if (newValues === enteredSearchTerm.value) {
-      activeSearchTerm.value = newValues;
-    }
-  }, 300);
-});
-
-const {user} = toRefs(props);
+// watch(enteredSearchTerm, (newValues) => {
+//   setTimeout(() => {
+//     if (newValues === enteredSearchTerm.value) {
+//       activeSearchTerm.value = newValues;
+//     }
+//   }, 300);
+// });
 
 watch(user, () => {
-  enteredSearchTerm.value = '';
+  updateSearch('');
 });
 </script>
 

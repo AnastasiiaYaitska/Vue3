@@ -26,35 +26,25 @@
 </template>
 
 <script setup>
-import { ref, computed, defineProps, watch } from 'vue';
+import { ref, computed, defineProps, toRefs } from 'vue';
+import useSearch from '../../hooks/search';
 import UserItem from './UserItem.vue';
 
 const props = defineProps({ users: Array });
 
-const enteredSearchTerm = ref('');
+const { users } = toRefs(props);
+const { enteredSearchTerm, availableItems, updateSearch } = useSearch(
+  users,
+  'fullName'
+);
 
-const activeSearchTerm = ref('');
-const availableUsers = computed(() => {
-  let users = [];
-  if (activeSearchTerm.value) {
-    users = props.users.filter((usr) =>
-      usr.fullName.includes(activeSearchTerm)
-    );
-  } else if (props.users) {
-    users = props.users;
-  }
-  return users;
-});
-const updateSearch = (val) => {
-  enteredSearchTerm.value = val;
-};
 
 const sorting = ref(null);
 const displayedUsers = computed(() => {
   if (!sorting.value) {
-    return availableUsers.value;
+    return availableItems.value;
   }
-  return availableUsers.value.slice().sort((u1, u2) => {
+  return availableItems.value.slice().sort((u1, u2) => {
     if (sorting.value === 'asc' && u1.fullName > u2.fullName) {
       return 1;
     } else if (sorting.value === 'asc') {
@@ -69,14 +59,6 @@ const displayedUsers = computed(() => {
 const sort = (mode) => {
   sorting.value = mode;
 };
-
-watch(enteredSearchTerm, (newVal)=>{
-  setTimeout(() => {
-        if ( newVal === enteredSearchTerm.value) {
-         activeSearchTerm.value = newVal;
-        }
-      }, 300);
-})
 </script>
 
 <!-- <script>
