@@ -5,7 +5,21 @@
   </main>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue';
+import USER_DATA from './dummy-data.js';
+
+import UserList from './components/users/UserList.vue';
+import ProjectsList from './components/projects/ProjectsList.vue';
+
+const selectedUser = ref(null);
+const activeUsers = USER_DATA;
+
+function selectUser(uid) {
+  selectedUser.value = activeUsers.find((usr) => usr.id === uid);
+}
+</script>
+<!-- <script>
 import USER_DATA from './dummy-data.js';
 
 import UserList from './components/users/UserList.vue';
@@ -28,7 +42,7 @@ export default {
     },
   },
 };
-</script>
+</script> -->
 
 <style>
 * {
